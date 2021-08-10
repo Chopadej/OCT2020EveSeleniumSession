@@ -1,0 +1,163 @@
+TestNG---> Testing New Generation Framework
+It is a Java Unit Testing Framework (Unit Testing means- Developer write their unit level test cases for their code with the 
+help of TestNG 
+TestNG and JUNIT will not be used with Python, javascript  
+Other tools available like TestNG are:
+JUNIT only used for Java  
+Pytest- python unit testing framework
+PHPUnit- PHP unit testing framework
+NUnit-- .Net unit testing framework
+Mocha/ Jasmin-- javascript unit testing framework
+-----------------------------------------------------------------------
+
+Purpose of TestNG:To write the test cases + to write the assertions (Validations) + generate some HTML reports + some other features
+--------------------------------------------------------------------------
+
+Why we dont write main method inside TestNG class
+TestNG.class contains main() actually which calls suite internally to execute. 
+So, you do not need to write main() method in a TestNG class to run it 
+as TestNG takes care of that by defining annotations. 
+You just need to provide proper annotations to methods and rest TestNG will execute them in a manner 
+by implicit call to main method of TestNG class.
+------------------------------------------------------------------------------
+
+There are 9 Annotations are present in TestNG these are keyword in TestNG starting with @
+and every annotation associated with method 
+4 preconditions annotation
+4 postcondition annotations
+1 test cases
+-----------------------------------------------------------------------------
+
+@BeforeMethod will start creating the pairs with @Test and @AfterMethod
+
+
+@BeforeSuite
+   @BeforeTest
+      @BeforeClass
+
+         @BeforeMethod
+           @Test- represents the Test cases 
+         @AfterMethod
+
+     @AfterClass
+   @AfterClass
+@AfterSuite
+
+Test cases are executed in their alphabetic order if we have not provided the priority 
+We can provide the priority to the test cases so based on the priority the test cases will be execued
+Priority should be provided to @Test annotation only   
+
+
+@BeforeTest   vs   @BeforeMethod
+@BeforeTest-
+If we write setup() method inside @BeforeTest then setUp() method will be executed once 
+and then all the test cases gets executed and then tearDown method will be executed inside the @AfterTest annotations
+This will not take time for execution 
+But while doing the Regression Testing, if we are executing the 100+ test cases in a row and if in between suppose 
+browser closed or application get crashed or page becomes blank then rest of the test cases will not be executed
+So execution coverage will be low
+
+ @BeforeMethod
+If we write setup() method inside @BeforeMethod then @BeforeMethod() method will start creating pair with @Test and @AfterMethod 
+pair will be created based on the number of test cases mentioned in @Test annotation 
+So it will take time for execution as it is creating the pair 
+But while doing the Regression Testing, if we are executing the 100+ test cases in a row and if in between suppose 
+browser closed or application get crashed or page becomes blank then rest of the test cases will be executed because 
+each time its opening the new browser instances 
+So execution coverage will be high
+
+
+Inheritance concept in TestNG
+Suppose we have 3 TestNG classes called GoogleTestBT, FlipkartTest and NoonTest having common method both inside @BeforeTest and @AfterTest so instead of
+writing common method in all the three classes we can create one base call and we write common method in base class and access those method
+using the concept of inheritance like extending the base class
+
+
+When we have multiple TestNG classes while executing those classes we need execute one by one manually like Run as TestNG
+but we can overcome from this approach by creating separate template runner file with the help of xml file
+How to create this?
+Right click on your project and create New->Source Folder and give the name as "src/test/resources" and then
+right click to that folder and New->Folder and give name as testrunners again right click that folder and create
+New->File give any name like testng.xml (extension should be .xml)
+
+
+Format of .XML file
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">  ---> these 2 lines are 
+
+<suite name="Test automtion regression suite" parallel="tests"
+	thread-count="3" verbose="3">
+
+	<test name="Google Test">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="TestNgSessions.GoogleTestWithBT">
+				<!-- <methods> 
+				<include name="googleTitleTest" /> 
+				<include name="googleLogoTest" />
+				<exclude name="googleSearchButtonTest" /> 
+					</methods> -->
+			</class>
+		</classes>
+	</test>
+
+	<test name="Flipkart Test">
+		<parameter name="browser" value="firefox" />
+
+		<classes>
+			<class name="TestNgSessions.FlipkartTest" />
+		</classes>
+	</test>
+
+	<test name="Noon Test">
+		<parameter name="browser" value="chrome" />
+
+		<classes>
+			<class name="TestNgSessions.NoonTest" />
+		</classes>
+	</test>
+
+
+
+</suite>
+
+
+------------------------------------
+Test cases are executed based on the alphabetical order and if we provide priority then should be 
+execute on the priority basis
+priority starts from 0
+negative value is also consider in a priority 0, -1, -2, 2 ,3 order of execution will be -2, -1, 0, 2, 3 
+if we have both priority based test cases and non priority based test cases then execution order will be non priority
+based test cases and then priority based test cases 
+If priority is same like 2, 2 then based on the alphabetical order it will execute
+
+----------------------------------------------
+ExpectedExceptionConcept
+If test cases likely to be throw an exception then we can write the 
+@Test(expectedExceptions= ArithmeticException.class)
+We can write more than one exception as well
+@Test(expectedExceptions= {ArithmeticException.class, NullPointerException})
+
+------------------------------------------------
+DependsOnMethod
+we can create the dependancy between test cases by using the dependsOnMethod
+if any test cases is depending on other test cases then we can use dependsOnMethod
+if login test case is pass then only we can execute the further test cases like homePage 
+if login test cases is failed then test cases which we write dependsOnMethod will be skipped 
+-----------------------------------------
+InnocationCountTest
+this says the number of time specified test cases should be executed
+@Test(priority=1, innocationCount=10)
+----------------------------------------------------------
+Include/ exclude test cases for execution
+if don't want to execute some of the test cases then simply write enable= false instead of commenting the test cases
+@Test(priority=1, enabled= false) and all test cases bydefault enable= true internally 
+
+Second way is, in the pom.xml file add class name and method attribute and in the method body <include name= Test case name/>
+or <exclude name= test case name/> 
+
+
+Rules for POM
+any Test class should not call the driver api and page should not write any assertion 
+

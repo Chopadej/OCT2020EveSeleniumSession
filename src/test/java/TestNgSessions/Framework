@@ -1,0 +1,9 @@
+We are going to develop a framework on a web application and this framework will be a Hybrid Framework
+We are using design pattern that is called POM (Page Object Model)
+We will be using Data Driven Approach 
+Using some concept of Libs/ and Utilities
+We will be writting some Generic functions 
+Creating some Reporting (HTML)
+Also using SRP (Single Responsibility Principle)
+
+High Level Design (HLD)
